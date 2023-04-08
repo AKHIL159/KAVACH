@@ -53,10 +53,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
                     android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
-            ActivityCompat.requestPermissions(MainActivity.this,
-                    new String[]{android.Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS},
-                    PackageManager.PERMISSION_GRANTED);
-        }
+
+        }ActivityCompat.requestPermissions(MainActivity.this,
+                new String[]{android.Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS},
+                PackageManager.PERMISSION_GRANTED);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationEnabled();
@@ -134,8 +134,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         try {
             Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
-           GeoLocs=  "\nCity : " + addresses.get(0).getLocality() + //"\nState : " + addresses.get(0).getAdminArea() +//
-                   /*"\nCountry : " + addresses.get(0).getCountryName()*/  "\nPin : " + addresses.get(0).getPostalCode() +
+           GeoLocs=  "\nLatitude : " + location.getLatitude() + "\nLongitude : " + location.getLongitude() +//"\nCity : " + addresses.get(0).getLocality() + //"\nState : " + addresses.get(0).getAdminArea() +//
+                   /*"\nCountry : " + addresses.get(0).getCountryName()  "\nPin : " + addresses.get(0).getPostalCode() +*/
                     "\nLocality : " + addresses.get(0).getAddressLine(0);
 
         } catch (Exception e) {
