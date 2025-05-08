@@ -4,27 +4,24 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
+
 import android.Manifest;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.telephony.SmsManager;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+
 import android.widget.TextView;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -32,11 +29,15 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     LocationManager locationManager;
     TextView textView;
-    Button btn,add,rem;
-    EditText Nums;
+   // CheckBox cb;
+
     String GeoLocs = "";
 
+
+    //ArrayList<contact> contactsList = new ArrayList<>();
     ArrayList<String> numberList = new ArrayList<>();
+    final int for_speak = 100;
+    final int for_nums = 200;
 
 
     @Override
@@ -44,35 +45,43 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         textView = findViewById(R.id.tv1);
-        btn = findViewById(R.id.btn);
-        Nums = findViewById(R.id.Number);
-        add = findViewById(R.id.add);
-        rem = findViewById(R.id.rem);
-        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getApplicationContext(),
-                android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
-                    android.Manifest.permission.ACCESS_COARSE_LOCATION}, 101);
 
-        }ActivityCompat.requestPermissions(MainActivity.this,
-                new String[]{android.Manifest.permission.SEND_SMS, Manifest.permission.READ_SMS},
-                PackageManager.PERMISSION_GRANTED);
+
+        //cb = findViewById(R.id.checkBox);
+//        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+          //      && ActivityCompat.checkSelfPermission(getApplicationContext(),
+               // android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION,
+                    android.Manifest.permission.ACCESS_COARSE_LOCATION, android.Manifest.permission.SEND_SMS,
+                    Manifest.permission.RECORD_AUDIO,Manifest.permission.READ_CONTACTS}, 101);
+
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationEnabled();
         getLocation();
     }
+
+
+    public void numberActivity(View view){
+        Intent intent0 = new Intent(this,NumbersActivity.class);
+        intent0.putExtra("CURRENT_NUMBER_LIST",numberList);
+        startActivityForResult(intent0,for_nums);
+//        Bundle args = new Bundle();
+//        args.putSerializable("CURRENT_NUMBER_LIST",numberList);
+//        intent.putExtra("BUNDLE",args);
+//        startActivityForResult(intent,1234);
+    }
     public void speak(View view) {
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Start Speaking");
-        startActivityForResult(intent, 0);
+        startActivityForResult(intent,for_speak);
     }
     private void forSms(){
         String message = "HELP!!!" + GeoLocs;
-        numberList.add("+919441372718");//Kaushik lanja
-        numberList.add("+918264401267");//Ganesh
-//        numberList.add("+917816026092"); Me
+        //numberList.add("+919441372718");//Kaushik
+        //numberList.add("+918264401267");//Ganesh
+        //numberList.add("+917816026092");
         for (String x:
                 numberList) {
             SmsManager mySmsManager = SmsManager.getDefault();
@@ -82,12 +91,26 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 0 && resultCode == RESULT_OK){
-            textView.setText(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0));}
-        if (textView.getText().toString().toLowerCase().contains("kavach")){
-           forSms();
-           // System.out.println(GeoLocs);
+        if(requestCode == for_speak && resultCode == RESULT_OK){
+            if(data!=null) {
+                textView.setText(data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS).get(0));
+                if (textView.getText().toString().toLowerCase().contains("kavach")) {
+                    forSms();
+//                 System.out.println(numberList);
+//                System.out.println(GeoLocs);
+                }
+            }
         }
+        if(requestCode == for_nums && resultCode == RESULT_OK){
+            if (data!=null) {
+                //System.out.println("REQUEST PROCESSED");
+                //Intent intent2 = getIntent();
+                //Bundle args3 = intent1.getBundleExtra("BUNDLE1");
+                numberList = data.getStringArrayListExtra("MODIFIED_NUMBER_LIST");
+                System.out.println(numberList);
+            }
+        }
+
     }
     private void locationEnabled() {
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -108,13 +131,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                     .setTitle("Enable GPS Service")
                     .setMessage("We need your GPS location to show Near Places around you.")
                     .setCancelable(false)
-                    .setPositiveButton("Enable", new
-                            DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                                    startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
-                                }
-                            })
+                    .setPositiveButton("Enable", (paramDialogInterface, paramInt) -> startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)))
                     .setNegativeButton("Cancel", null)
                     .show();
         }
@@ -156,18 +173,5 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public void onProviderDisabled(String provider) {
 
     }
-    public void addNum(View view){
-        String newNum = Nums.getText().toString();
-        if (numberList.contains(newNum)){return;}
-        if (newNum.length()!=10){
-            return;
-        }
-        numberList.add("+91"+newNum);
-        Nums.setText("");
-    }
-    public void remNum(View view){
-        String newNum = Nums.getText().toString();
-        numberList.removeAll(Collections.singleton("+91"+newNum));
-        Nums.setText("");
-    }
+
 }
