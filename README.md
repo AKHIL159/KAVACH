@@ -8,19 +8,6 @@
 
 ---
 
-## 📸 App Preview
-
-<!-- 
-TIP: Create a folder named 'screenshots' in your repository, upload your app images there, and update the paths below!
--->
-
-<p align="center">
-  <img src="screenshots/main_screen.png" width="250" alt="Main SOS Dashboard">
-  <img src="screenshots/contacts_screen.png" width="250" alt="Emergency Contacts Management">
-</p>
-
----
-
 ## ✨ Key Features
 
 *   **One-Tap SOS Activation:** A prominent, easily accessible distress button that triggers instant alerts.
@@ -34,7 +21,7 @@ TIP: Create a folder named 'screenshots' in your repository, upload your app ima
 ## 🛠️ Tech Stack & Libraries
 
 *   **Development Environment:** Android Studio
-*   **Languages:** Kotlin / Java
+*   **Languages:** Java
 *   **Database (Local Storage):** Room DB / SharedPreferences (To store emergency contacts and numbers securely on-device)
 *   **Location Architecture:** Google Fused Location Provider API (Ensures fast, battery-efficient, high-accuracy GPS tracking)
 *   **Communication Layer:** Android Native `SmsManager` & Background Email API Client
@@ -68,7 +55,7 @@ To guarantee reliable operation during an active crisis, Kavach requests the fol
 1.  Clone this repository to your local machine:
 ```bash
     git clone [https://github.com/YOUR_GITHUB_USERNAME/kavach.git](https://github.com/YOUR_GITHUB_USERNAME/kavach.git)
-    ```
+```
 2.  Open **Android Studio** and select **Open an Existing Project**, then choose the cloned `kavach` folder.
 3.  Allow Gradle to sync and download all necessary structural dependencies.
 4.  Enable **Developer Options** and **USB Debugging** on your target Android device.
