@@ -1,7 +1,7 @@
 # 🛡️ Kavach (कवच) - Women & Personal Safety App
 
 [![Android Studio](https://img.shields.io/badge/Android%20Studio-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white)](https://developer.android.com/studio)
-[![Language](https://img.shields.io/badge/Language-Kotlin%20%2F%20Java-blue?style=for-the-badge)](https://developer.android.com/guide)
+[![Language](https://img.shields.io/badge/Language-Java-blue?style=for-the-badge)](https://developer.android.com/guide)
 [![Platform](https://img.shields.io/badge/Platform-Android-green?style=for-the-badge&logo=android)](https://www.android.com/)
 
 **Kavach** (meaning *Shield* or *Armor*) is a robust Android-based personal safety application designed to provide immediate assistance to individuals in unsafe or critical situations. With a single press of a button, the app immediately dispatches distress signals containing real-time location tracking data to pre-selected emergency contacts and public safety numbers.
@@ -54,7 +54,7 @@ To guarantee reliable operation during an active crisis, Kavach requests the fol
 ### Steps to Run
 1.  Clone this repository to your local machine:
 ```bash
-    git clone [https://github.com/YOUR_GITHUB_USERNAME/kavach.git](https://github.com/YOUR_GITHUB_USERNAME/kavach.git)
+    git clone [https://github.com/AKHIL159/KAVACH.git](https://github.com/AKHIL159/KAVACH.git)
 ```
 2.  Open **Android Studio** and select **Open an Existing Project**, then choose the cloned `kavach` folder.
 3.  Allow Gradle to sync and download all necessary structural dependencies.
